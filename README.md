@@ -15,7 +15,7 @@
 
 ```css
 @font-face {
-  font-family: 'Test';
+  font-family: 'My Font';
   src: url("/path/to/font/file.eot");
   src: url("/path/to/font/file.eot?#iefix") format('embedded-opentype'),
        url("/path/to/font/file.woff") format('woff'),
@@ -49,5 +49,5 @@ MIT © [Sean King](http://simpla.io)
 [daviddm-image]: https://david-dm.org/seaneking/postcss-fontpath.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/seaneking/postcss-fontpath
 [PostCSS]: https://github.com/postcss/postcss
-[fontspring]: http://blog.fontspring.com/2011/02/the-new-bulletproof-font-face-syntax/
+[fontspring]: http://blog.fontspring.com/2011/02/further-hardening-of-the-bulletproof-syntax/
 
