@@ -33,8 +33,6 @@ module.exports = postcss.plugin('postcss-fontpath', function () {
 
         });
 
-        console.log(src);
-
         // IE Fix src prop
         decl.cloneBefore({ prop: 'src', value: ieSrc });
 
