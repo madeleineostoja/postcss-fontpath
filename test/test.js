@@ -7,7 +7,9 @@ var postcss = require('postcss'),
     path = require('path'),
     plugin = require('../');
 
-var test = function (input, expected, opts, done) {
+var test = function (fixture, opts, done) {
+  var input = fixture + '.css',
+      expected = fixture + '.expected.css';
 
   input = fs.readFileSync(path.join(__dirname, 'fixtures', input), 'utf8');
   expected = fs.readFileSync(path.join(__dirname, 'fixtures', expected), 'utf8');
@@ -27,7 +29,7 @@ var test = function (input, expected, opts, done) {
 describe('postcss-fontpath', function () {
 
   it('transforms font-path', function (done) {
-   test('test.css', 'test.expected.css', { }, done);
+   test('test', 'test', { }, done);
   });
 
 });
