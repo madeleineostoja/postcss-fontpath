@@ -29,7 +29,7 @@ var test = function (fixture, opts, done) {
 describe('postcss-fontpath', function () {
 
   it('transforms font-path', function (done) {
-   test('test', 'test', { }, done);
+   test('test', { }, done);
   });
 
 });
