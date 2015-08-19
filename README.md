@@ -1,7 +1,9 @@
-# postcss-fontpath 
+# PostCSS FontPath
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
-[PostCSS] plugin that adds a `font-path` attribute to `@font-face` which expands to the [FontSpring syntax][fontspring].
+[PostCSS][PostCSS] plugin that adds a `font-path` attribute to `@font-face` which expands to the [FontSpring syntax][fontspring].
+
+Part of [Rucksack - CSS Superpowers](http://simplaio.github.io/rucksack).
 
 ```css
 /* Note: path must include base filename */
@@ -34,7 +36,7 @@
 postcss([ require('postcss-fontpath') ])
 ```
 
-See [PostCSS] docs for examples for your environment.
+See [PostCSS][PostCSS] docs for examples for your environment.
 
 --
 
@@ -50,4 +52,3 @@ MIT © [Sean King](https://twitter.com/seaneking)
 [daviddm-url]: https://david-dm.org/seaneking/postcss-fontpath
 [PostCSS]: https://github.com/postcss/postcss
 [fontspring]: http://blog.fontspring.com/2011/02/further-hardening-of-the-bulletproof-syntax/
-
