@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/seaneking/postcss-fontpath",
   "dependencies": {
+    "object-assign": "^4.0.1",
     "postcss": "^5.0.0"
   },
   "devDependencies": {

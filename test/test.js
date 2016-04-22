@@ -32,4 +32,15 @@ describe('postcss-fontpath', function () {
    test('test', { }, done);
   });
 
+  it('errors when file in font-path not exists', function (done) {
+    test('test', { checkMissing: true, ignoreMissing: false }, function (err) {
+      expect(err).to.be.an.instanceof(Error);
+      done();
+    });
+  });
+
+  it('ignores error when file in font-path not exists', function (done) {
+    test('missing', { checkMissing: true, ignoreMissing: true }, done);
+  });
+
 });
