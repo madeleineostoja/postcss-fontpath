@@ -40,6 +40,14 @@ See [PostCSS][PostCSS] docs for examples for your environment.
 
 --
 
+### Options
+
+**checkPath** (boolean, default = `false`)
+
+If true, the plugin will check if the path to the font file exists. When not found, the file is skipped in the output and a warning is logged.
+
+--
+
 ### License
 
 MIT © [Sean King](https://twitter.com/seaneking)
