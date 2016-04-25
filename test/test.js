@@ -18,29 +18,28 @@ var test = function (fixture, opts, done) {
     .process(input)
     .then(function (result) {
       expect(result.css).to.eql(expected);
-      expect(result.warnings()).to.be.empty;
-    done();
-  }).catch(function (error) {
-    done(error);
-  });
+      done(null, result);
+    }).catch(function (error) {
+      done(error);
+    });
 
 };
 
 describe('postcss-fontpath', function () {
 
   it('transforms font-path', function (done) {
-   test('test', { }, done);
+   test('test', {}, function (error, result) {
+     expect(error).to.be.null;
+     expect(result.warnings()).to.be.empty;
+     done();
+   });
   });
 
-  it('errors when file in font-path not exists', function (done) {
-    test('test', { checkMissing: true, ignoreMissing: false }, function (err) {
-      expect(err).to.be.an.instanceof(Error);
+  it('warns when file in font-path not exists', function (done) {
+    test('missing', { checkPath: true }, function (error, result) {
+      expect(error).to.be.null;
+      expect(result.warnings()).to.have.lengthOf(4);
       done();
     });
   });
-
-  it('ignores error when file in font-path not exists', function (done) {
-    test('missing', { checkMissing: true, ignoreMissing: true }, done);
-  });
-
 });

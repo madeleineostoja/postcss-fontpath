@@ -8,11 +8,10 @@ var url = require('url');
 
 module.exports = postcss.plugin('postcss-fontpath', function (opts) {
   opts = objectAssign({
-    checkMissing: false,
-    ignoreMissing: true
+    checkPath: false
   }, opts);
 
-  return function (css) {
+  return function (css, result) {
 
     // Loop through each @rule
     css.walkAtRules('font-face', function(rule) {
@@ -34,16 +33,14 @@ module.exports = postcss.plugin('postcss-fontpath', function (opts) {
         // Construct the new src value
         formats.forEach(function(format, index, array) {
 
-          if (opts.checkMissing === true) {
+          if (opts.checkPath === true) {
             // Make the fontPath absolute and normalize it (removes the #iefix hash)
             var absoluteFontPath = url.parse(path.resolve(path.dirname(css.source.input.file), fontPath) + format.ext).pathname;
 
             try {
               fs.accessSync(absoluteFontPath, fs.F_OK);
             } catch (err) {
-              if (opts.ignoreMissing !== true) {
-                throw err;
-              }
+              decl.warn(result, 'Cannot find file "' + fontPath + format.ext + '"');
 
               // Skip the format in the src output
               return;
