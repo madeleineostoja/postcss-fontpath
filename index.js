@@ -25,6 +25,7 @@ module.exports = postcss.plugin('postcss-fontpath', function (opts) {
             ieSrc = 'url("' + fontPath + '.eot")',
             formats = [
               { type: 'embedded-opentype', ext: '.eot?#iefix' },
+              { type: 'woff2', ext: '.woff2' },
               { type: 'woff', ext: '.woff' },
               { type: 'truetype', ext: '.ttf' },
               { type: 'svg', ext: '.svg' }
