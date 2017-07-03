@@ -1,68 +1,90 @@
 'use strict';
 
-var fs = require('fs');
-var objectAssign = require('object-assign');
-var path = require('path');
-var postcss = require('postcss');
-var url = require('url');
+var fs = require('fs'),
+  objectAssign = require('object-assign'),
+  path = require('path'),
+  postcss = require('postcss'),
+  url = require('url');
 
 module.exports = postcss.plugin('postcss-fontpath', function (opts) {
+
   opts = objectAssign({
-    checkPath: false
+    checkPath: false,
+    showMissingFontError: true,
+    formats: [
+      {type: 'embedded-opentype', ext: 'eot'},
+      {type: 'woff2', ext: 'woff2'},
+      {type: 'woff', ext: 'woff'},
+      {type: 'truetype', ext: 'ttf'},
+      {type: 'svg', ext: 'svg'}
+    ]
   }, opts);
 
   return function (css, result) {
-
     // Loop through each @rule
     css.walkAtRules('font-face', function(rule) {
 
       // Loop through each decleration in the rule
       rule.walkDecls('font-path', function(decl) {
 
-        // Gather up the components of our new declerations
-        var fontPath = decl.value.replace(/'/g, ''),
-            src = '',
-            ieSrc = 'url("' + fontPath + '.eot")',
-            formats = [
-              { type: 'embedded-opentype', ext: '.eot?#iefix' },
-              { type: 'woff2', ext: '.woff2' },
-              { type: 'woff', ext: '.woff' },
-              { type: 'truetype', ext: '.ttf' },
-              { type: 'svg', ext: '.svg' }
-            ];
+        // Replace single and double quotes with nothing
+        var fontPath = decl.value.replace(/"/g, '').replace(/'/g, ''),
+          // Fonts array for found fonts
+          fonts = [],
+          // Is there an eot to include EOT fallabck
+          ieSrc = false,
 
-        // Construct the new src value
-        formats.forEach(function(format, index, array) {
+          // placeholder vars
+          ext = '',
+          absoluteFontPath = '';
 
+        // Foreach of the formats used
+        opts.formats.forEach(function(format, index, array) {
+
+          // If checking for path
           if (opts.checkPath === true) {
             // Make the fontPath absolute and normalize it (removes the #iefix hash)
-            var absoluteFontPath = url.parse(path.resolve(path.dirname(css.source.input.file), fontPath) + format.ext).pathname;
+            absoluteFontPath = url.parse(path.resolve(path.dirname(css.source.input.file), fontPath) + '.' + format.ext).pathname;
 
             try {
+              // Try to see if the font exists
               fs.accessSync(absoluteFontPath, fs.F_OK);
             } catch (err) {
-              decl.warn(result, 'Cannot find file "' + fontPath + format.ext + '"');
-
+              // Only output error if wanted
+              if(opts.showMissingFontError) {
+                decl.warn(result, 'Cannot find file "' + fontPath + format.ext + '"');
+              }
               // Skip the format in the src output
               return;
             }
           }
 
-          if (index === array.length - 1){
-            src += 'url("' + fontPath + format.ext + '") format(\'' + format.type + '\')';
-          } else {
-            src += 'url("' + fontPath + format.ext + '") format(\'' + format.type + '\'),\n       ';
+          // Set the ext var
+          ext = format.ext;
+
+          if(ext === 'eot') {
+            ieSrc = true;
+            ext = 'eot?#iefix'
           }
 
+          // Add the font to the font-face dec
+          fonts.push('url("' + fontPath + '.' + ext + '") format(\'' + format.type + '\')');
         });
 
-        if (src.length > 0) {
+        if (fonts.length > 0) {
+          // If the EOT exists, add the fallback
+          if(ieSrc ) {
+            decl.cloneBefore({
+              prop: 'src',
+              value: 'url("' + fontPath + '.eot")'
+            });
+          }
 
-          // IE Fix src prop
-          decl.cloneBefore({ prop: 'src', value: ieSrc });
-
-          // New src prop
-          decl.cloneBefore({ prop: 'src', value: src });
+          // Implode the rest of the fonts
+          decl.cloneBefore({
+            prop: 'src',
+            value: fonts.join(',')
+          });
         }
 
         // Remove our custom decleration
@@ -71,6 +93,5 @@ module.exports = postcss.plugin('postcss-fontpath', function (opts) {
       });
 
     });
-
   };
 });
