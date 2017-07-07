@@ -4,11 +4,8 @@ var fs = require('fs'),
   merge = require('deepmerge'),
   path = require('path'),
   postcss = require('postcss'),
-  url = require('url')
-
-module.exports = postcss.plugin('postcss-fontpath', function (options) {
-
-  var defaults = {
+  url = require('url'),
+  defaults = {
     checkPath: false,
     formats: [
       {type: 'embedded-opentype', ext: 'eot'},
@@ -17,8 +14,11 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
       {type: 'truetype', ext: 'ttf'},
       {type: 'svg', ext: 'svg'}
     ]
-  },
-  opts = merge(defaults, options);
+  };
+
+module.exports = postcss.plugin('postcss-fontpath', function (options) {
+
+  var opts = merge(defaults, options);
 
   return function (css, result) {
     // Loop through each @rule
