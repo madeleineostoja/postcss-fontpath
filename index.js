@@ -4,8 +4,9 @@ var fs = require('fs'),
   merge = require('deepmerge'),
   path = require('path'),
   postcss = require('postcss'),
-  url = require('url'),
-  defaults = {
+  url = require('url');
+
+var defaults = {
     checkPath: false,
     formats: [
       {type: 'embedded-opentype', ext: 'eot'},
@@ -20,7 +21,7 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
 
   var opts = merge(defaults, options || {});
 
-  return function (css, result) {
+  return function (css) {
     // Loop through each @rule
     css.walkAtRules('font-face', function(rule) {
 
@@ -39,7 +40,7 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
           absoluteFontPath = '';
 
         // Foreach of the formats used
-        opts.formats.forEach(function(format, index, array) {
+        opts.formats.forEach(function(format) {
 
           // If checking for path
           if (opts.checkPath === true) {
@@ -58,9 +59,9 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
           // Set the ext var
           ext = format.ext;
 
-          if(ext === 'eot') {
+          if (ext === 'eot') {
             ieSrc = true;
-            ext = 'eot?#iefix'
+            ext = 'eot?#iefix';
           }
 
           // Add the font to the font-face dec
@@ -69,7 +70,7 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
 
         if (fonts.length > 0) {
           // If the EOT exists, add the fallback
-          if(ieSrc ) {
+          if (ieSrc) {
             decl.cloneBefore({
               prop: 'src',
               value: 'url("' + fontPath + '.eot")'
