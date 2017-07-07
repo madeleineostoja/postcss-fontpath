@@ -78,7 +78,7 @@ module.exports = postcss.plugin('postcss-fontpath', function (opts) {
           // Implode the rest of the fonts
           decl.cloneBefore({
             prop: 'src',
-            value: fonts.join(',')
+            value: fonts.join(',\n       ')
           });
         }
 
