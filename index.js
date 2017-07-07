@@ -10,7 +10,6 @@ module.exports = postcss.plugin('postcss-fontpath', function (opts) {
 
   opts = objectAssign({
     checkPath: false,
-    showMissingFontError: true,
     formats: [
       {type: 'embedded-opentype', ext: 'eot'},
       {type: 'woff2', ext: 'woff2'},
@@ -50,10 +49,6 @@ module.exports = postcss.plugin('postcss-fontpath', function (opts) {
               // Try to see if the font exists
               fs.accessSync(absoluteFontPath, fs.F_OK);
             } catch (err) {
-              // Only output error if wanted
-              if(opts.showMissingFontError) {
-                decl.warn(result, 'Cannot find file "' + fontPath + format.ext + '"');
-              }
               // Skip the format in the src output
               return;
             }
