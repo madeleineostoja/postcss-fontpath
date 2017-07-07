@@ -18,7 +18,7 @@ var fs = require('fs'),
 
 module.exports = postcss.plugin('postcss-fontpath', function (options) {
 
-  var opts = merge(defaults, options);
+  var opts = merge(defaults, options || {});
 
   return function (css, result) {
     // Loop through each @rule
