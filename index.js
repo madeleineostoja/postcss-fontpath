@@ -1,14 +1,14 @@
 'use strict';
 
 var fs = require('fs'),
-  objectAssign = require('object-assign'),
+  merge = require('deepmerge'),
   path = require('path'),
   postcss = require('postcss'),
-  url = require('url');
+  url = require('url')
 
-module.exports = postcss.plugin('postcss-fontpath', function (opts) {
+module.exports = postcss.plugin('postcss-fontpath', function (options) {
 
-  opts = objectAssign({
+  var defaults = {
     checkPath: false,
     formats: [
       {type: 'embedded-opentype', ext: 'eot'},
@@ -17,7 +17,8 @@ module.exports = postcss.plugin('postcss-fontpath', function (opts) {
       {type: 'truetype', ext: 'ttf'},
       {type: 'svg', ext: 'svg'}
     ]
-  }, opts);
+  },
+  opts = merge(defaults, options);
 
   return function (css, result) {
     // Loop through each @rule
