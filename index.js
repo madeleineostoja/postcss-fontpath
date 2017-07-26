@@ -7,7 +7,7 @@ var fs = require('fs'),
   url = require('url');
 
 var defaults = {
-    checkPath: false,
+    checkFiles: false,
     ie8Fix: false,
     formats: [
       { type: 'embedded-opentype', ext: 'eot' },
@@ -33,13 +33,14 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
         var fontPath = decl.value.replace(/"/g, '').replace(/'/g, ''),
           fonts = [],
           ieHack = false,
-          ext = '',
-          absoluteFontPath = '';
+          ext = '';
 
         opts.formats.forEach(function(format) {
 
-          if (opts.checkPath === true) {
-            absoluteFontPath = url.parse(path.resolve(path.dirname(css.source.input.file), fontPath) + '.' + format.ext).pathname;
+          if (opts.checkFiles) {
+            // Best guess at where our fonts might be relative to
+            var basePath = css.source.input.file || process.cwd(),
+                absoluteFontPath = url.parse(path.resolve(path.dirname(basePath), fontPath) + '.' + format.ext).pathname;
 
             try {
               // Try to see if the font exists
