@@ -41,5 +41,5 @@ describe('postcss-fontpath', function () {
 
   it('does not output fonts whose files do not exist if checkFiles is true', function(done) {
     test('missing', { checkFiles: true }, done);
-  })
+  });
 });
