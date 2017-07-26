@@ -31,6 +31,10 @@ describe('postcss-fontpath', function () {
    test('test', {}, done);
   });
 
+  it('only generates specified formats', function(done) {
+   test('formats', { formats: [ { type: 'woff2', ext: 'woff2' } ] }, done);
+  });
+
   it('adds the ie8 hack when ie8Fix is true', function(done) {
    test('ie-fix', { ie8Fix: true }, done);
   });
