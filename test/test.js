@@ -34,4 +34,8 @@ describe('postcss-fontpath', function () {
   it('adds the ie8 hack when ie8Fix is true', function(done) {
    test('ie-fix', { ie8Fix: true }, done);
   });
+
+  it('does not output fonts whose files do not exist if checkFiles is true', function(done) {
+    test('missing', { checkFiles: true }, done);
+  })
 });
