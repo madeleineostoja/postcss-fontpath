@@ -7,39 +7,31 @@ var postcss = require('postcss'),
     path = require('path'),
     plugin = require('../');
 
-var test = function (fixture, opts, done) {
-  var from = path.join(__dirname, 'fixtures', fixture + '.css'),
-      to = path.join(__dirname, 'fixtures', fixture + '.expected.css');
+function test(fixture, opts, done) {
+  var input = fixture + '.css',
+      expected = fixture + '.expected.css';
 
-  var input = fs.readFileSync(from, 'utf8'),
-      expected = fs.readFileSync(to, 'utf8');
+  input = fs.readFileSync(path.join(__dirname, 'fixtures', input), 'utf8');
+  expected = fs.readFileSync(path.join(__dirname, 'fixtures', expected), 'utf8');
 
   postcss([ plugin(opts) ])
-    .process(input, { from: from })
+    .process(input)
     .then(function (result) {
       expect(result.css).to.eql(expected);
-      done(null, result);
+      expect(result.warnings()).to.be.empty;
+      done();
     }).catch(function (error) {
       done(error);
     });
-
-};
+}
 
 describe('postcss-fontpath', function () {
 
-  it('transforms font-path', function (done) {
-   test('test', {}, function (error, result) {
-     expect(error).to.be.null;
-     expect(result.warnings()).to.be.empty;
-     done();
-   });
+  it('transforms font-path with default options', function(done) {
+   test('test', {}, done);
   });
 
-  it('warns when file in font-path not exists', function (done) {
-    test('missing', { checkPath: true }, function (error, result) {
-      expect(error).to.be.null;
-      expect(result.warnings()).to.have.lengthOf(5);
-      done();
-    });
+  it('adds the ie8 hack when ie8Fix is true', function(done) {
+   test('ie-fix', { ie8Fix: true }, done);
   });
 });

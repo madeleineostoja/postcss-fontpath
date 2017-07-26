@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Test';
-  src: url("/path/to/font.eot") format('embedded-opentype'),
+  src: url("/path/to/font.eot");
+  src: url("/path/to/font.eot?#iefix") format('embedded-opentype'),
        url("/path/to/font.woff2") format('woff2'),
        url("/path/to/font.woff") format('woff'),
        url("/path/to/font.ttf") format('truetype'),
