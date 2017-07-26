@@ -2,6 +2,7 @@
   font-family: 'Test';
   src: url("/path/to/font/test.eot");
   src: url("/path/to/font/test.eot?#iefix") format('embedded-opentype'),
+       url("/path/to/font/test.woff2") format('woff2'),
        url("/path/to/font/test.woff") format('woff'),
        url("/path/to/font/test.ttf") format('truetype'),
        url("/path/to/font/test.svg") format('svg');

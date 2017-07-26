@@ -8,14 +8,14 @@ var postcss = require('postcss'),
     plugin = require('../');
 
 var test = function (fixture, opts, done) {
-  var input = fixture + '.css',
-      expected = fixture + '.expected.css';
+  var from = path.join(__dirname, 'fixtures', fixture + '.css'),
+      to = path.join(__dirname, 'fixtures', fixture + '.expected.css');
 
-  input = fs.readFileSync(path.join(__dirname, 'fixtures', input), 'utf8');
-  expected = fs.readFileSync(path.join(__dirname, 'fixtures', expected), 'utf8');
+  var input = fs.readFileSync(from, 'utf8'),
+      expected = fs.readFileSync(to, 'utf8');
 
   postcss([ plugin(opts) ])
-    .process(input)
+    .process(input, { from: from })
     .then(function (result) {
       expect(result.css).to.eql(expected);
       done(null, result);
@@ -38,7 +38,7 @@ describe('postcss-fontpath', function () {
   it('warns when file in font-path not exists', function (done) {
     test('missing', { checkPath: true }, function (error, result) {
       expect(error).to.be.null;
-      expect(result.warnings()).to.have.lengthOf(4);
+      expect(result.warnings()).to.have.lengthOf(5);
       done();
     });
   });
