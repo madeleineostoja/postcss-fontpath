@@ -1,6 +1,6 @@
 {
   "name": "postcss-fontpath",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "PostCSS plugin that adds a font-path attribute to @font-face which expands to the FontSpring syntax",
   "keywords": [
     "postcss",
