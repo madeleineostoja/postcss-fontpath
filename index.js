@@ -8,12 +8,13 @@ var fs = require('fs'),
 
 var defaults = {
     checkPath: false,
+    ie8Fix: false,
     formats: [
-      {type: 'embedded-opentype', ext: 'eot'},
-      {type: 'woff2', ext: 'woff2'},
-      {type: 'woff', ext: 'woff'},
-      {type: 'truetype', ext: 'ttf'},
-      {type: 'svg', ext: 'svg'}
+      { type: 'embedded-opentype', ext: 'eot' },
+      { type: 'woff2', ext: 'woff2' },
+      { type: 'woff', ext: 'woff' },
+      { type: 'truetype', ext: 'ttf' },
+      { type: 'svg', ext: 'svg'}
     ]
   };
 
@@ -30,28 +31,20 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
 
         // Replace single and double quotes with nothing
         var fontPath = decl.value.replace(/"/g, '').replace(/'/g, ''),
-          // Fonts array for found fonts
           fonts = [],
-          // Is there an eot to include EOT fallabck
-          ieSrc = false,
-
-          // placeholder vars
+          ieHack = false,
           ext = '',
           absoluteFontPath = '';
 
-        // Foreach of the formats used
         opts.formats.forEach(function(format) {
 
-          // If checking for path
           if (opts.checkPath === true) {
-            // Make the fontPath absolute and normalize it (removes the #iefix hash)
             absoluteFontPath = url.parse(path.resolve(path.dirname(css.source.input.file), fontPath) + '.' + format.ext).pathname;
 
             try {
               // Try to see if the font exists
               fs.accessSync(absoluteFontPath, fs.F_OK);
             } catch (err) {
-              // Skip the format in the src output
               return;
             }
           }
@@ -59,18 +52,19 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
           // Set the ext var
           ext = format.ext;
 
-          if (ext === 'eot') {
-            ieSrc = true;
+          if (ext === 'eot' && opts.ie8Fix) {
+            ieHack = true;
             ext = 'eot?#iefix';
           }
 
-          // Add the font to the font-face dec
+          // Add the font to the font-face decl
           fonts.push('url("' + fontPath + '.' + ext + '") format(\'' + format.type + '\')');
         });
 
         if (fonts.length > 0) {
+
           // If the EOT exists, add the fallback
-          if (ieSrc) {
+          if (ieHack && opts.ie8Fix) {
             decl.cloneBefore({
               prop: 'src',
               value: 'url("' + fontPath + '.eot")'
