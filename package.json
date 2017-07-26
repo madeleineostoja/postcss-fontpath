@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/seaneking/postcss-fontpath",
   "dependencies": {
-    "deepmerge": "^1.5.0",
     "postcss": "^6.0.0"
   },
   "devDependencies": {

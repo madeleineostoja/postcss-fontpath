@@ -1,26 +1,25 @@
 'use strict';
 
 var fs = require('fs'),
-  merge = require('deepmerge'),
-  path = require('path'),
-  postcss = require('postcss'),
-  url = require('url');
+    path = require('path'),
+    postcss = require('postcss'),
+    url = require('url');
 
-var defaults = {
-    checkFiles: false,
-    ie8Fix: false,
-    formats: [
-      { type: 'embedded-opentype', ext: 'eot' },
-      { type: 'woff2', ext: 'woff2' },
-      { type: 'woff', ext: 'woff' },
-      { type: 'truetype', ext: 'ttf' },
-      { type: 'svg', ext: 'svg'}
-    ]
-  };
+var DEFAULT_OPTS = {
+  checkFiles: false,
+  ie8Fix: false,
+  formats: [
+    { type: 'embedded-opentype', ext: 'eot' },
+    { type: 'woff2', ext: 'woff2' },
+    { type: 'woff', ext: 'woff' },
+    { type: 'truetype', ext: 'ttf' },
+    { type: 'svg', ext: 'svg'}
+  ]
+};
 
-module.exports = postcss.plugin('postcss-fontpath', function (options) {
+module.exports = postcss.plugin('postcss-fontpath', function(opts) {
 
-  var opts = merge(defaults, options || {});
+  var config = Object.assign({}, DEFAULT_OPTS, opts || {});
 
   return function (css) {
     // Loop through each @rule
@@ -35,9 +34,9 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
           ieHack = false,
           ext = '';
 
-        opts.formats.forEach(function(format) {
+        config.formats.forEach(function(format) {
 
-          if (opts.checkFiles) {
+          if (config.checkFiles) {
             // Best guess at where our fonts might be relative to
             var basePath = css.source.input.file || process.cwd(),
                 absoluteFontPath = url.parse(path.resolve(path.dirname(basePath), fontPath) + '.' + format.ext).pathname;
@@ -53,7 +52,7 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
           // Set the ext var
           ext = format.ext;
 
-          if (ext === 'eot' && opts.ie8Fix) {
+          if (ext === 'eot' && config.ie8Fix) {
             ieHack = true;
             ext = 'eot?#iefix';
           }
@@ -65,7 +64,7 @@ module.exports = postcss.plugin('postcss-fontpath', function (options) {
         if (fonts.length > 0) {
 
           // If the EOT exists, add the fallback
-          if (ieHack && opts.ie8Fix) {
+          if (ieHack && config.ie8Fix) {
             decl.cloneBefore({
               prop: 'src',
               value: 'url("' + fontPath + '.eot")'
