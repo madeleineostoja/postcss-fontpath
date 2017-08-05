@@ -1,5 +1,5 @@
 # PostCSS Fontpath
-[![NPM version][npm-badge]][npm-url] [![Build Status][travis-badge]][travis-url] [![Dependency Status][daviddm-badge]][daviddm-url]
+[![NPM version][npm-badge]][npm-url] [![Downloads][downloads-badge]][npm-url] [![Build Status][travis-badge]][travis-url]
 
 [PostCSS][PostCSS] plugin that automatically generates `src` values for `@font-face` rules based on the path to your font files. You can manually provide the types of sources to output, or automatically generate sources based on the font files that actually exist in your project.
 
@@ -90,9 +90,8 @@ MIT © [Sean King](https://twitter.com/seaneking)
 
 [npm-badge]: https://badge.fury.io/js/postcss-fontpath.svg
 [npm-url]: https://npmjs.org/package/postcss-fontpath
+[downloads-badge]: https://img.shields.io/npm/dm/postcss-fontpath.svg
 [travis-badge]: https://travis-ci.org/seaneking/postcss-fontpath.svg?branch=master
 [travis-url]: https://travis-ci.org/seaneking/postcss-fontpath
-[daviddm-badge]: https://david-dm.org/seaneking/postcss-fontpath.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/seaneking/postcss-fontpath
 [PostCSS]: https://github.com/postcss/postcss
 [fontspring]: http://blog.fontspring.com/2011/02/further-hardening-of-the-bulletproof-syntax/
