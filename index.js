@@ -1,11 +1,11 @@
 'use strict';
 
-var fs = require('fs'),
-    path = require('path'),
-    postcss = require('postcss'),
-    url = require('url');
+const fs = require('fs');
+const path = require('path');
+const postcss = require('postcss');
+const url = require('url');
 
-var DEFAULT_OPTS = {
+const DEFAULT_OPTS = {
   checkFiles: false,
   ie8Fix: false,
   formats: [
@@ -17,28 +17,28 @@ var DEFAULT_OPTS = {
   ]
 };
 
-module.exports = postcss.plugin('postcss-fontpath', function(opts) {
+module.exports = postcss.plugin('postcss-fontpath', opts => {
 
-  var config = Object.assign({}, DEFAULT_OPTS, opts || {});
+  const config = Object.assign({}, DEFAULT_OPTS, opts || {});
 
-  return function (css) {
+  return function(css) {
     // Loop through each @rule
-    css.walkAtRules('font-face', function(rule) {
+    css.walkAtRules('font-face', rule => {
 
       // Loop through each decleration in the rule
-      rule.walkDecls('font-path', function(decl) {
+      rule.walkDecls('font-path', decl => {
 
         // Replace single and double quotes with nothing
-        var fontPath = decl.value.replace(/"/g, '').replace(/'/g, ''),
-          fonts = [],
-          ieHack = false,
-          ext = '';
+        let fontPath = decl.value.replace(/"/g, '').replace(/'/g, ''),
+            fonts = [],
+            ieHack = false,
+            ext = '';
 
-        config.formats.forEach(function(format) {
+        config.formats.forEach(format => {
 
           if (config.checkFiles) {
             // Best guess at where our fonts might be relative to
-            var basePath = css.source.input.file || process.cwd(),
+            let basePath = css.source.input.file || process.cwd(),
                 absoluteFontPath = url.parse(path.resolve(path.dirname(basePath), fontPath) + '.' + format.ext).pathname;
 
             try {
@@ -80,9 +80,7 @@ module.exports = postcss.plugin('postcss-fontpath', function(opts) {
 
         // Remove our custom decleration
         decl.remove();
-
       });
-
     });
   };
 });

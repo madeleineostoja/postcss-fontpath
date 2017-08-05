@@ -1,14 +1,13 @@
-/*eslint no-unused-expressions: 0, block-scoped-var: 0, no-undef: 0*/
 'use strict';
 
-var postcss = require('postcss'),
-    expect = require('chai').expect,
-    fs = require('fs'),
-    path = require('path'),
-    plugin = require('../');
+const postcss = require('postcss');
+const expect = require('chai').expect;
+const fs = require('fs');
+const path = require('path');
+const plugin = require('../');
 
 function test(fixture, opts, done) {
-  var input = fixture + '.css',
+  let input = fixture + '.css',
       expected = fixture + '.expected.css';
 
   input = fs.readFileSync(path.join(__dirname, 'fixtures', input), 'utf8');
@@ -26,20 +25,8 @@ function test(fixture, opts, done) {
 }
 
 describe('postcss-fontpath', function () {
-
-  it('transforms font-path with default options', function(done) {
-   test('test', {}, done);
-  });
-
-  it('only generates specified formats', function(done) {
-   test('formats', { formats: [ { type: 'woff2', ext: 'woff2' } ] }, done);
-  });
-
-  it('adds the ie8 hack when ie8Fix is true', function(done) {
-   test('ie-fix', { ie8Fix: true }, done);
-  });
-
-  it('does not output fonts whose files do not exist if checkFiles is true', function(done) {
-    test('missing', { checkFiles: true }, done);
-  });
+  it('transforms font-path with default options', done => test('test', {}, done));
+  it('only generates specified formats', done => test('formats', { formats: [ { type: 'woff2', ext: 'woff2' } ] }, done));
+  it('adds the ie8 hack when ie8Fix is true', done => test('ie-fix', { ie8Fix: true }, done));
+  it('does not output fonts whose files do not exist if checkFiles is true', done => test('missing', { checkFiles: true }, done));
 });
