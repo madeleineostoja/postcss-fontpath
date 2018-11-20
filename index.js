@@ -13,6 +13,7 @@ const DEFAULT_OPTS = {
     { type: 'woff2', ext: 'woff2' },
     { type: 'woff', ext: 'woff' },
     { type: 'truetype', ext: 'ttf' },
+    { type: 'opentype', ext: 'otf' },
     { type: 'svg', ext: 'svg'}
   ]
 };
