@@ -25,6 +25,7 @@ _Part of [Rucksack - CSS Superpowers](http://simplaio.github.io/rucksack)_
        url("/path/to/font/file.woff") format('woff2'),
        url("/path/to/font/file.woff") format('woff'),
        url("/path/to/font/file.ttf") format('truetype'),
+       url("/path/to/font/file.otf") format('opentype'),
        url("/path/to/font/file.svg") format('svg');
   font-weight: normal;
   font-style: normal;
@@ -80,7 +81,7 @@ If you need to support IE8 (which doesn't support multiple `src` values or `form
 
 Option       | Type    | Default | Description                                                                                         
 ------------ | ------- | ------- | -----------                                                                                         
-`formats`    | Array   | `[ { type: 'embedded-opentype', ext: 'eot' }, { type: 'woff2', ext: 'woff2' }, { type: 'woff', ext: 'woff' }, { type: 'truetype', ext: 'ttf' }, { type: 'svg', ext: 'svg'} ]` | Default font formats to generate `src` values for                                                   
+`formats`    | Array   | `[ { type: 'embedded-opentype', ext: 'eot' }, { type: 'woff2', ext: 'woff2' }, { type: 'woff', ext: 'woff' }, { type: 'truetype', ext: 'ttf' }, { type: 'opentype', ext: 'otf' }, { type: 'svg', ext: 'svg'} ]` | Default font formats to generate `src` values for
 `checkFiles` | Boolean | `false` | Whether to generate `src` values based on the font files that actually exist at the given font-path 
 `ie8Fix`     | Boolean | `false` | Whether to generate a hack for IE8 support                                                          
 
